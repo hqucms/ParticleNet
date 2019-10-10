@@ -86,9 +86,10 @@ class EdgeConv(nn.HybridBlock):
             channels: tuple of output channels
             pooling: pooling method ('max' or 'average')
         Inputs:
-            points: (N, P, C_in)
+            points: (N, C_p, P)
+            features: (N, C_0, P)
         Returns:
-            transformed points: (N, P, C_out), C_out = channels[-1]
+            transformed points: (N, C_out, P), C_out = channels[-1]
         """
         super(EdgeConv, self).__init__()
         self.K = K
@@ -151,7 +152,10 @@ class EdgeConv(nn.HybridBlock):
         else:
             sc = features
 
-        return self.sc_act(sc + fts)  # (N, C_out, P)
+        if self.sc_act:
+            return self.sc_act(sc + fts)  # (N, C_out, P)
+        else:
+            return sc + fts
 
 
 class ParticleNet(nn.HybridBlock):
@@ -192,7 +196,7 @@ class ParticleNet(nn.HybridBlock):
 
         fts = self.bn_fts(features)
         for layer_idx, layer_param in enumerate(self.conv_params):
-            pts = points if layer_idx == 0 else F.broadcast_add(coord_shift, fts)
+            pts = F.broadcast_add(coord_shift, points) if layer_idx == 0 else F.broadcast_add(coord_shift, fts)
             fts = self.xconvs[layer_idx](pts, fts)
 
         if mask is not None:
