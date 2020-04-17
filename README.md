@@ -118,15 +118,50 @@ conda install -c conda-forge awkward
 
 # install uproot_methods
 conda install -c conda-forge uproot-methods
+
+# install jupyterhub kernel
+cd /nfs/dust/cms/user/<username>/anaconda2/envs/myenv #you should be here already, better to be sure
+conda activate myenv
+pip install ipykernel --user
+python -m ipykernel install --user --name="myenv"
 ```
 
 ### Clone repository
 
-### Load environment to jupyter notebooks
+If you followed these instructions, you should have tensorflow2.0 installed. Let's now clone this repository.
+
+```
+cd /nfs/dust/cms/user/<username>
+mkdir ML_LLP #this is just my personal choice
+cd ML_LLP
+git clone https://github.com/lbenato/ParticleNet-LLP-fork.git
+
+mkdir TopTaggingDataset #prepare a directory to store data
+```
 
 ### Download and scp top tagging datasets on /nfs/dust
 
+The full top tagging dataset can be found here: [https://zenodo.org/record/2603256](https://zenodo.org/record/2603256).
+
+A smaller size version for training and validation is available here (consider only train.h5 and val.h5): [https://desycloud.desy.de/index.php/s/rKrtHqbQwb5TAfg](https://desycloud.desy.de/index.php/s/rKrtHqbQwb5TAfg).
+
+Please download train, val and test in your PC. Then open a new shell on a terminal, and type:
+
+```
+scp <file_you_want_to_copy> <username>@naf-cms.desy.de:/nfs/dust/cms/user/<username>/ML_LLP/TopTaggingDataset/.
+```
+
+### Load environment to jupyter notebooks
+
+Launch https://naf-jhub.desy.de/ and click on "Select GPU node", "Start". Click on "link_nfs_dust", "ML_LLP" and "ParticleNet-LLP-fork". Choose "tf-keras" and "convert_dataset.ipynb".
+
+First important thing to do: click on "Kernel", "Change kernel", and choose "myenv". In this way, you have successfully loaded your conda environment. Remember to check this everytime you launch a notebook.
+
+
 ### Run Keras/Tensorflow scripts
+
+
+
 
 ------
 **Keras/TensorFlow implemetation** 
