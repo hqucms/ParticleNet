@@ -1,14 +1,33 @@
-# ParticleNet
+# ParticleNet-LLP-fork
 
 Implementation of the jet classification network in [ParticleNet: Jet Tagging via Particle Clouds](https://arxiv.org/abs/1902.08570).
 
+Instructions to use ParticleNet architecture with naf-gpu infrastructure at DESY.
+
+## Installing required packages
+
+The full installation will take a while. Please be patient and carefully follow these instructions.
+
+### Login
+
+We will need to use naf-gpu login node. <username> is your personal username on naf.
+
+```
+ssh -XY <username>@naf-cms-gpu01.desy.de
+```
+
+### Create a link to /nfs/dust areas
+
+### Create environment
+
+### Load environment to jupyter notebooks
+
+### Download and scp top tagging datasets on /nfs/dust
+
+### Run Keras/Tensorflow scripts
+
 ------
-
-**MXNet implemetation**
- - [model](mxnet/particle_net.py)
-
-
-**[New] Keras/TensorFlow implemetation** 
+**Keras/TensorFlow implemetation** 
  - [model](tf-keras/tf_keras_model.py)
  - Requires tensorflow>=2.0.0 or >=1.15rc2. 
  - A full training example is available in [tf-keras/keras_train.ipynb](tf-keras/keras_train.ipynb). 
@@ -16,18 +35,7 @@ Implementation of the jet classification network in [ParticleNet: Jet Tagging vi
 
 ## How to use the model
 
-#### MXNet model
-
-The ParticleNet model can be obtained by calling the `get_particle_net` function in [particle_net.py](mxnet/particle_net.py), which can return either an MXNet `Symbol` or an MXNet Gluon `HybridBlock`. The model takes three input arrays:
- - `points`: the coordinates of the particles in the (eta, phi) space. It should be an array with a shape of (N, 2, P), where N is the batch size and P is the number of particles.
- - `features`: the features of the particles. It should be an array with a shape of (N, C, P), where N is the batch size, C is the number of features, and P is the number of particles.
- - `mask`: a mask array with a shape of (N, 1, P), taking a value of 0 for padded positions.
-
-To have a simple implementation for batched training on GPUs, we use fixed-length input arrays for all the inputs, although in principle the  ParticleNet architecture can handle variable number of particles in each jet. Zero-padding is used for the `points` and `features` inputs such that they always have the same length, and a `mask` array is used to indicate if a position is occupied by a real particle or by a zero-padded value.
-
-The implementation of a simplified model, ParticleNet-Lite, is also provided and can be accessed with the `get_particle_net_lite` function.
-
-#### Keras/TensorFlow model
+#### Keras/TensorFlow models
 
 The use of the Keras/TensorFlow model is similar to the MXNet model. A full training example is available in [tf-keras/keras_train.ipynb](tf-keras/keras_train.ipynb).
 
