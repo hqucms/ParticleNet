@@ -160,7 +160,8 @@ First important thing to do: click on "Kernel", "Change kernel", and choose "mye
 
 ### Run Keras/Tensorflow scripts
 
-
+Convert the top tagging dataset with: [tf-keras/convert_dataset.ipynb](tf-keras/convert_dataset.ipynb)
+Train the model with: [tf-keras/keras_train.ipynb](tf-keras/keras_train.ipynb)
 
 
 ------
