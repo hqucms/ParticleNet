@@ -77,6 +77,9 @@ conda install matplotlib
 # install pytables
 conda install pytables
 
+# install scikit-learn
+conda install scikit-learn
+
 # install ROOT
 conda install -c conda-forge root
  
