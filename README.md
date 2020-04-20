@@ -42,53 +42,23 @@ cd /nfs/dust/cms/user/<username>/
 #
 # Answer all other upcoming prompts with the recommended option (emphasized by rectangular parentheses)
 #
-# Optional: If you want an easier way of activating your conda environment in the terminal later,
-# you can allow anaconda to edit your .bashrc-file. You can also edit it later with the code snippet
-# provided below.
 wget https://repo.continuum.io/archive/Anaconda2-2019.10-Linux-x86_64.sh
 bash Anaconda2-2019.10-Linux-x86_64.sh
 # NOTE: The anaconda versions get updated from time to time. To have the latest version, you can look up the list at https://repo.continuum.io/archive/
 # ALSO NOTE: The message about where to install Anaconda2 will be displayed after having read the license terms.
  
-#OPTIONAL Edit your .bashrc file after installation.
-gedit ~/.bashrc
-# copy/paste this block somewhere in the file and replace "username" with your username:
- 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/nfs/dust/cms/user/<username>/anaconda2/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/nfs/dust/cms/user/<username>/anaconda2/etc/profile.d/conda.sh" ]; then
-        . "/nfs/dust/cms/user/<username>/anaconda2/etc/profile.d/conda.sh"
-    else
-        export PATH="/nfs/dust/cms/user/<username>/anaconda2/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
- 
- 
 # after installation, load anaconda
-# IMPORTANT NOTE!!! Once you finish this setup, you have to run the next command EVERY TIME you re-login into naf (except you chose to edit your .bashrc)!
+# IMPORTANT NOTE!!! Once you finish this setup, you have to run the next command EVERY TIME you re-login into naf!
 export PATH=/nfs/dust/cms/user/<username>/anaconda2/bin:$PATH
  
-# Now we create a conda environment. We are uncreative and call it "myenv"
-conda create -n myenv python=3.6
-source activate /nfs/dust/cms/user/<username>/anaconda2/envs/myenv
-# IMPORTANT: In addition to the export PATH command, you will also need to re-run this command each time you login to naf (except you chose to edit your .bashrc)!
- 
-# NOTE: If you chose to edit your .bashrc yourself or have conda edit it in the installation process, you can activate your environment with these simple commands
-# (needs to be run every time you re-login to NAF):
-source .bashrc
-source activate myenv
-# note that source .bashrc is also done if you just run "bash"
+# Now we create a conda environment
+conda create -n particlenet python=3.7
+source activate /nfs/dust/cms/user/<username>/anaconda2/envs/particlenet
+# IMPORTANT: In addition to the export PATH command, you will also need to re-run this command each time you login to naf!
  
 # cd to your environment directory
 # (note: this is IMPORTANT! If you try to install packages when not in your environment directory, you might get file I/O errors!)
-cd /nfs/dust/cms/user/<username>/anaconda2/envs/myenv/
- 
+cd /nfs/dust/cms/user/<username>/anaconda2/envs/particlenet/
  
 # Now we install some additional packages. Note that when installing packages with conda, the "solving environment" step can take forever.
 # This is normal behavior so do not abort the installation (unless it runs longer than several hours).
@@ -120,10 +90,10 @@ conda install -c conda-forge awkward
 conda install -c conda-forge uproot-methods
 
 # install jupyterhub kernel
-cd /nfs/dust/cms/user/<username>/anaconda2/envs/myenv #you should be here already, better to be sure
-conda activate myenv
+cd /nfs/dust/cms/user/<username>/anaconda2/envs/particlenet #you should be here already, better to be sure
+conda activate particlenet
 pip install ipykernel --user
-python -m ipykernel install --user --name="myenv"
+python -m ipykernel install --user --name="particlenet"
 ```
 
 ### Clone repository
@@ -155,7 +125,7 @@ scp <file_you_want_to_copy> <username>@naf-cms.desy.de:/nfs/dust/cms/user/<usern
 
 Launch https://naf-jhub.desy.de/ and click on "Select GPU node", "Start". Click on "link_nfs_dust", "ML_LLP" and "ParticleNet-LLP-fork". Choose "tf-keras" and "convert_dataset.ipynb".
 
-First important thing to do: click on "Kernel", "Change kernel", and choose "myenv". In this way, you have successfully loaded your conda environment. Remember to check this everytime you launch a notebook.
+First important thing to do: click on "Kernel", "Change kernel", and choose "particlenet". In this way, you have successfully loaded your conda environment. Remember to check this everytime you launch a notebook.
 
 
 ### Run Keras/Tensorflow scripts
