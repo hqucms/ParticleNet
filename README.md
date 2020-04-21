@@ -1,79 +1,102 @@
-# ParticleNet-LLP-fork
+# ParticleNet - LLP Fork
 
 Implementation of the jet classification network in [ParticleNet: Jet Tagging via Particle Clouds](https://arxiv.org/abs/1902.08570).
 
+## Getting started: ParticleNet on NAF GPU's
+
 Instructions to use ParticleNet architecture with naf-gpu infrastructure at DESY.
 
-## Installing required packages
-
-The full installation will take a while. Please be patient and carefully follow these instructions.
+**Note**: The full installation will take a while. Please be patient and carefully follow these instructions.
 
 ### Login
 
-We will need to use naf-gpu login node. <username> is your personal username on naf.
+We will use the naf-gpu login node. Here <username> is your DESY username.
 
-```
+```bash
 ssh -XY <username>@naf-cms-gpu01.desy.de
 ```
 
-### Create a link to /nfs/dust areas
+### Creating a link to your /nfs/dust/ area
 
-This is needed to be able to see /nfs/dust files on naf-jhub.
+This is needed to be able to see /nfs/dust/ files on JupyterHub.
 
-```
+```bash
 cd ~
 ln -s /nfs/dust/cms/user/<username> link_nfs_dust
 ```
 
-### Create environment
+### Installing anaconda
 
 We will install all the needed packages with anaconda.
 
-```
+```bash
 # load cuda module
 module load cuda
- 
+
 # change directory to your home directory on dust
 cd /nfs/dust/cms/user/<username>/
- 
-# install anaconda
-# ATTENTION! When asked where to install anaconda, do NOT simply approve by typing "y", but
-# provide your dust home directory instead (type: /nfs/dust/cms/user/<username>/anaconda2).
-#
-# Answer all other upcoming prompts with the recommended option (emphasized by rectangular parentheses)
-#
+
+# get the anaconda installer
+# Note: To have the latest version, you can look up the list at
+# https://repo.continuum.io/archive/
 wget https://repo.continuum.io/archive/Anaconda2-2019.10-Linux-x86_64.sh
+
+# install anaconda
 bash Anaconda2-2019.10-Linux-x86_64.sh
-# NOTE: The anaconda versions get updated from time to time. To have the latest version, you can look up the list at https://repo.continuum.io/archive/
-# ALSO NOTE: The message about where to install Anaconda2 will be displayed after having read the license terms.
- 
-# after installation, load anaconda
-# IMPORTANT NOTE!!! Once you finish this setup, you have to run the next command EVERY TIME you re-login into naf!
+
+# press ENTER to review the license agreement and type "yes" to accept
+
+# ATTENTION! When asked where to install anaconda,
+# do NOT press enter to confirm the default location,
+# but provide your dust home directory instead
+# (type: /nfs/dust/cms/user/<username>/anaconda2).
+
+# Answer all other prompts with the recommended option (in brackets).
+# Optional: To have an easier way to activate your conda environment,
+# you can allow anaconda to edit your .bashrc file.
+
+# load anaconda
+# IMPORTANT: You have to run this command every time you log in to NAF!
 export PATH=/nfs/dust/cms/user/<username>/anaconda2/bin:$PATH
- 
-# Now we create a conda environment
+
+```
+
+
+### Creating a conda environment
+
+We will be working inside a conda environment. To create and activate the environment, follow the instructions below:
+
+```bash
+# create a conda environment called "particlenet"
 conda create -n particlenet python=3.7
+
+# activate the environment
+# IMPORTANT: You also need to run this command every time you log in to NAF!
 source activate /nfs/dust/cms/user/<username>/anaconda2/envs/particlenet
-# IMPORTANT: In addition to the export PATH command, you will also need to re-run this command each time you login to naf!
- 
+```
+
+### Installing required packages
+
+Note: When installing packages with conda, the "solving environment" step can take a long time. This is normal behavior so do not abort the installation (unless it runs longer than several hours).
+
+```bash
 # cd to your environment directory
-# (note: this is IMPORTANT! If you try to install packages when not in your environment directory, you might get file I/O errors!)
+# Note: This is important! If you try to install packages when not in
+# your environment directory, you might get file I/O errors!
 cd /nfs/dust/cms/user/<username>/anaconda2/envs/particlenet/
- 
-# Now we install some additional packages. Note that when installing packages with conda, the "solving environment" step can take forever.
-# This is normal behavior so do not abort the installation (unless it runs longer than several hours).
-# At first, install keras
+
+# install keras
 conda install -c anaconda keras-gpu
- 
+
 # install tensorflow
 conda install tensorflow
- 
+
 #install pandas (for data manipulation and analysis)
 conda install pandas
- 
+
 # install matplotlib
 conda install matplotlib
- 
+
 # install pytables
 conda install pytables
 
@@ -82,7 +105,7 @@ conda install scikit-learn
 
 # install ROOT
 conda install -c conda-forge root
- 
+
 # install root_numpy
 conda install -c conda-forge root_numpy
 
@@ -99,37 +122,50 @@ pip install ipykernel --user
 python -m ipykernel install --user --name="particlenet"
 ```
 
-### Clone repository
+### Cloning this repository
 
 If you followed these instructions, you should have tensorflow2.0 installed. Let's now clone this repository.
 
-```
+```bash
 cd /nfs/dust/cms/user/<username>
 mkdir ML_LLP #this is just my personal choice
 cd ML_LLP
 git clone https://github.com/lbenato/ParticleNet-LLP-fork.git
+```
 
+### Download the top-tagging datasets to /nfs/dust/
+
+The full top tagging dataset can be found here:
+[https://zenodo.org/record/2603256](https://zenodo.org/record/2603256).
+
+A smaller size version for training and validation is available here:
+[https://desycloud.desy.de/index.php/s/rKrtHqbQwb5TAfg](https://desycloud.desy.de/index.php/s/rKrtHqbQwb5TAfg).
+
+To download the samples to your dust area on NAF, just do the following:
+
+```bash
+cd /nfs/dust/cms/user/<username>/ML_LLP
 mkdir TopTaggingDataset #prepare a directory to store data
+cd TopTaggingDataset
+wget -O test.h5 'https://zenodo.org/record/2603256/files/test.h5'
+wget -O train.h5 'https://desycloud.desy.de/index.php/s/rKrtHqbQwb5TAfg/download?path=%2Ftop-tagging&files=train.h5'
+wget -O val.h5 'https://desycloud.desy.de/index.php/s/rKrtHqbQwb5TAfg/download?path=%2Ftop-tagging&files=val.h5'
 ```
 
-### Download and scp top tagging datasets on /nfs/dust
+### Loading a conda environment to jupyter notebooks
 
-The full top tagging dataset can be found here: [https://zenodo.org/record/2603256](https://zenodo.org/record/2603256).
+Launch JupyterHub at https://naf-jhub.desy.de/
 
-A smaller size version for training and validation is available here (consider only train.h5 and val.h5): [https://desycloud.desy.de/index.php/s/rKrtHqbQwb5TAfg](https://desycloud.desy.de/index.php/s/rKrtHqbQwb5TAfg).
+Check *Select GPU node* and click on *Start*
 
-Please download train, val and test in your PC. Then open a new shell on a terminal, and type:
+On the browser, click on the directories to go to:
+`nfs_dust/ML_LLP/ParticleNet-LLP-fork/tf-keras`
 
-```
-scp <file_you_want_to_copy> <username>@naf-cms.desy.de:/nfs/dust/cms/user/<username>/ML_LLP/TopTaggingDataset/.
-```
+Here, you can find two jupyter notebooks:
+- [convert_dataset.ipynb](tf-keras/convert_dataset.ipynb)keras_train.ipynb
+- [keras_train.ipynb](tf-keras/keras_train.ipynb)
 
-### Load environment to jupyter notebooks
-
-Launch https://naf-jhub.desy.de/ and click on "Select GPU node", "Start". Click on "link_nfs_dust", "ML_LLP" and "ParticleNet-LLP-fork". Choose "tf-keras" and "convert_dataset.ipynb".
-
-First important thing to do: click on "Kernel", "Change kernel", and choose "particlenet". In this way, you have successfully loaded your conda environment. Remember to check this everytime you launch a notebook.
-
+**Note**: Every time you open a notebook, make sure to load your conda environment! You just need to click on *Kernel*, *Change kernel*, and *particlenet*.
 
 ### Run Keras/Tensorflow scripts
 
@@ -138,17 +174,29 @@ Train the model with: [tf-keras/keras_train.ipynb](tf-keras/keras_train.ipynb)
 
 
 ------
-**Keras/TensorFlow implemetation** 
+
+# About ParticleNet
+
+**Keras/TensorFlow implemetation**
  - [model](tf-keras/tf_keras_model.py)
- - Requires tensorflow>=2.0.0 or >=1.15rc2. 
- - A full training example is available in [tf-keras/keras_train.ipynb](tf-keras/keras_train.ipynb). 
-    - The top tagging dataset can be obtained from [https://zenodo.org/record/2603256](https://zenodo.org/record/2603256) and converted with this [script](tf-keras/convert_dataset.ipynb). 
+ - Requires tensorflow>=2.0.0 or >=1.15rc2.
+ - A full training example is available in [tf-keras/keras_train.ipynb](tf-keras/keras_train.ipynb).
+    - The top tagging dataset can be obtained from [https://zenodo.org/record/2603256](https://zenodo.org/record/2603256) and converted with this [script](tf-keras/convert_dataset.ipynb).
 
 ## How to use the model
 
 #### Keras/TensorFlow models
 
-The use of the Keras/TensorFlow model is similar to the MXNet model. A full training example is available in [tf-keras/keras_train.ipynb](tf-keras/keras_train.ipynb).
+The ParticleNet model can be obtained by calling the `get_particle_net` function in [tf_keras_model.py](tf-keras/tf_keras_model.py), which takes three input arrays:
+ - `points`: the coordinates of the particles in the (eta, phi) space. It should be an array with a shape of (N, 2, P), where N is the batch size and P is the number of particles.
+ - `features`: the features of the particles. It should be an array with a shape of (N, C, P), where N is the batch size, C is the number of features, and P is the number of particles.
+ - `mask`: a mask array with a shape of (N, 1, P), taking a value of 0 for padded positions.
+
+To have a simple implementation for batched training on GPUs, we use fixed-length input arrays for all the inputs, although in principle the  ParticleNet architecture can handle variable number of particles in each jet. Zero-padding is used for the `points` and `features` inputs such that they always have the same length, and a `mask` array is used to indicate if a position is occupied by a real particle or by a zero-padded value.
+
+The implementation of a simplified model, ParticleNet-Lite, is also provided and can be accessed with the `get_particle_net_lite` function.
+
+A full training example is available in [tf-keras/keras_train.ipynb](tf-keras/keras_train.ipynb).
 
 ## Citation
 If you use ParticleNet in your research, please cite the paper:
