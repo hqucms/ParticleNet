@@ -24,7 +24,7 @@ This is needed to be able to see /nfs/dust/ files on JupyterHub.
 
 ```bash
 cd ~
-ln -s /nfs/dust/cms/user/<username> link_nfs_dust
+ln -s /nfs/dust/cms/user/<username> nfs_dust
 ```
 
 ### Installing anaconda
