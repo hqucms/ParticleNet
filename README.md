@@ -137,12 +137,10 @@ git clone https://github.com/lbenato/ParticleNet-LLP-fork.git
 
 ### Download the top-tagging datasets to /nfs/dust/
 
-The full top tagging dataset can be found here:
-
+The full top tagging dataset can be found here:\
 [https://zenodo.org/record/2603256](https://zenodo.org/record/2603256).
 
-A smaller size version for training and validation is available here:
-
+A smaller size version for training and validation is available here:\
 [https://desycloud.desy.de/index.php/s/rKrtHqbQwb5TAfg](https://desycloud.desy.de/index.php/s/rKrtHqbQwb5TAfg).
 
 To download the samples to your dust area on NAF, just do the following:
@@ -170,7 +168,8 @@ Here, you can find two jupyter notebooks:
 - [convert_dataset.ipynb](tf-keras/convert_dataset.ipynb)
 - [keras_train.ipynb](tf-keras/keras_train.ipynb)
 
-**Note**: Every time you open a notebook, make sure to load your conda environment! You just need to click on `Kernel`, `Change kernel`, and `particlenet`.
+**Note**: Every time you open a notebook, make sure to load your conda environment!\
+You just need to click on `Kernel`, `Change kernel`, and `particlenet`.
 
 ### Run Keras/Tensorflow scripts
 
