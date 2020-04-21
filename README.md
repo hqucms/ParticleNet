@@ -2,6 +2,8 @@
 
 Implementation of the jet classification network in [ParticleNet: Jet Tagging via Particle Clouds](https://arxiv.org/abs/1902.08570).
 
+-----
+
 ## Getting started: ParticleNet on NAF GPU's
 
 Instructions to use ParticleNet architecture with naf-gpu infrastructure at DESY.
@@ -77,7 +79,7 @@ source activate /nfs/dust/cms/user/<username>/anaconda2/envs/particlenet
 
 ### Installing required packages
 
-Note: When installing packages with conda, the "solving environment" step can take a long time. This is normal behavior so do not abort the installation (unless it runs longer than several hours).
+**Note:** When installing packages with conda, the "solving environment" step can take a long time. This is normal behavior so do not abort the installation (unless it runs longer than several hours).
 
 ```bash
 # cd to your environment directory
