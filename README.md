@@ -6,11 +6,11 @@ Implementation of the jet classification network in [ParticleNet: Jet Tagging vi
 
 Instructions to use ParticleNet architecture with naf-gpu infrastructure at DESY.
 
-**Note**: The full installation will take a while. Please be patient and carefully follow these instructions.
+**Note:** The full installation will take a while. Please be patient and carefully follow these instructions.
 
 ### Login
 
-We will use the naf-gpu login node. Here <username> is your DESY username.
+We will use the naf-gpu login node. Here `<username>` is your DESY username.
 
 ```bash
 ssh -XY <username>@naf-cms-gpu01.desy.de
@@ -136,9 +136,11 @@ git clone https://github.com/lbenato/ParticleNet-LLP-fork.git
 ### Download the top-tagging datasets to /nfs/dust/
 
 The full top tagging dataset can be found here:
+
 [https://zenodo.org/record/2603256](https://zenodo.org/record/2603256).
 
 A smaller size version for training and validation is available here:
+
 [https://desycloud.desy.de/index.php/s/rKrtHqbQwb5TAfg](https://desycloud.desy.de/index.php/s/rKrtHqbQwb5TAfg).
 
 To download the samples to your dust area on NAF, just do the following:
@@ -156,23 +158,25 @@ wget -O val.h5 'https://desycloud.desy.de/index.php/s/rKrtHqbQwb5TAfg/download?p
 
 Launch JupyterHub at https://naf-jhub.desy.de/
 
-Check *Select GPU node* and click on *Start*
+Check `Select GPU node` and click on `Start`
 
 On the browser, click on the directories to go to:
+
 `nfs_dust/ML_LLP/ParticleNet-LLP-fork/tf-keras`
 
 Here, you can find two jupyter notebooks:
-- [convert_dataset.ipynb](tf-keras/convert_dataset.ipynb)keras_train.ipynb
+- [convert_dataset.ipynb](tf-keras/convert_dataset.ipynb)
 - [keras_train.ipynb](tf-keras/keras_train.ipynb)
 
-**Note**: Every time you open a notebook, make sure to load your conda environment! You just need to click on *Kernel*, *Change kernel*, and *particlenet*.
+**Note**: Every time you open a notebook, make sure to load your conda environment! You just need to click on `Kernel`, `Change kernel`, and `particlenet`.
 
 ### Run Keras/Tensorflow scripts
 
 Convert the top tagging dataset with: [tf-keras/convert_dataset.ipynb](tf-keras/convert_dataset.ipynb)
+
 Train the model with: [tf-keras/keras_train.ipynb](tf-keras/keras_train.ipynb)
 
-
+**Note:** Don't forget to change the `username` when needed!
 ------
 
 # About ParticleNet
@@ -192,7 +196,7 @@ The ParticleNet model can be obtained by calling the `get_particle_net` function
  - `features`: the features of the particles. It should be an array with a shape of (N, C, P), where N is the batch size, C is the number of features, and P is the number of particles.
  - `mask`: a mask array with a shape of (N, 1, P), taking a value of 0 for padded positions.
 
-To have a simple implementation for batched training on GPUs, we use fixed-length input arrays for all the inputs, although in principle the  ParticleNet architecture can handle variable number of particles in each jet. Zero-padding is used for the `points` and `features` inputs such that they always have the same length, and a `mask` array is used to indicate if a position is occupied by a real particle or by a zero-padded value.
+To have a simple implementation for batched training on GPUs, fixed-length input arrays are used for all the inputs, although in principle the  ParticleNet architecture can handle variable number of particles in each jet. Zero-padding is used for the `points` and `features` inputs such that they always have the same length, and a `mask` array is used to indicate if a position is occupied by a real particle or by a zero-padded value.
 
 The implementation of a simplified model, ParticleNet-Lite, is also provided and can be accessed with the `get_particle_net_lite` function.
 
